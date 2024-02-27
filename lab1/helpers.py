@@ -58,3 +58,27 @@ def clahe_cv(img, clip_limit, tile_grid_size):
 
     return cv.cvtColor(cv.merge((l_new, a, b)), cv.COLOR_LAB2BGR)
 
+# https://www.inase.org/library/2015/vienna/bypaper/BICHE/BICHE-09.pdf
+def fhh(img, beta):
+    c = (255.)/(math.exp(-1.) - 1.)
+    l, a, b = cv.split(cv.cvtColor(img, cv.COLOR_BGR2LAB))
+
+    g = cv.normalize(l, None, 0, 1, cv.NORM_MINMAX, cv.CV_32F)
+    g = cv.pow(g, beta, None)
+    g = cv.exp(-g, None)
+    g = (g - 1) * c
+    g = g.astype('uint8')
+
+    img_out = cv.merge((g, a, b))
+    img_out = cv.cvtColor(img_out, cv.COLOR_LAB2BGR)
+
+    return img_out
+
+def gamma_correction(img, gamma):
+    g = cv.normalize(img, None, 0, 255, cv.NORM_MINMAX, )
+    g = g ** (1/gamma)
+    g *= 255
+    g = g.astype('uint8')
+
+    return g
+
