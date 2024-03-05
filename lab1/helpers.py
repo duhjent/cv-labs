@@ -75,10 +75,13 @@ def fhh(img, beta):
     return img_out
 
 def gamma_correction(img, gamma):
-    g = cv.normalize(img, None, 0, 255, cv.NORM_MINMAX, )
+    l, a, b = cv.split(cv.cvtColor(img, cv.COLOR_BGR2LAB))
+    g = cv.normalize(l, None, 0, 1, cv.NORM_MINMAX, cv.CV_32F)
     g = g ** (1/gamma)
     g *= 255
     g = g.astype('uint8')
 
-    return g
+    img_out = cv.merge((g, a, b))
+    img_out = cv.cvtColor(img_out, cv.COLOR_LAB2BGR)
 
+    return img_out

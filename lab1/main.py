@@ -1,4 +1,4 @@
-from helpers import open_from_web, visualize_image_with_hist, clahe, clahe_cv, fhh, histogram_equalization, histogram_equalization_cv
+from helpers import gamma_correction, open_from_web, visualize_image_with_hist, clahe, clahe_cv, fhh, histogram_equalization, histogram_equalization_cv
 import matplotlib.pyplot as plt
 import os
 import cv2 as cv
@@ -57,12 +57,6 @@ for file in os.listdir('./standard_test_images'):
 
     img = cv.imread(file_path)
 
-    # fig, axs = plt.subplots(1, 2)
-    # fig.suptitle(f'{title} Original')
-    # visualize_image_with_hist(img, axs)
-    # plt.savefig(f'./out_images/{title}-orig.png')
-    # plt.close()
-
     img_he = histogram_equalization(img)
     img_he_cv = histogram_equalization_cv(img)
 
@@ -74,7 +68,7 @@ for file in os.listdir('./standard_test_images'):
     fhh_beta = .8
     img_fhh = fhh(img, fhh_beta)
 
-    fig, axs = plt.subplots(6, 2, figsize=(10, 50))
+    fig, axs = plt.subplots(8, 2, figsize=(10, 50))
 
     visualize_image_with_hist(img, axs[0])
     visualize_image_with_hist(img_he, axs[1])
@@ -82,38 +76,8 @@ for file in os.listdir('./standard_test_images'):
     visualize_image_with_hist(img_clahe, axs[3])
     visualize_image_with_hist(img_clahe_cv, axs[4])
     visualize_image_with_hist(img_fhh, axs[5])
+    visualize_image_with_hist(gamma_correction(img, .8), axs[6])
+    visualize_image_with_hist(gamma_correction(img, 1.2), axs[7])
 
     plt.savefig(f'./out_images/singles/{title}.png')
     plt.close()
-
-    break
-
-    # fig, axs = plt.subplots(1, 2)
-    # fig.suptitle(f'{title} HE')
-    # visualize_image_with_hist(img_he, axs)
-    # plt.savefig(f'./out_images/{title}-he.png')
-    # plt.close()
-
-    # fig, axs = plt.subplots(1, 2)
-    # fig.suptitle(f'{title} HE OpenCV')
-    # visualize_image_with_hist(img_he_cv, axs)
-    # plt.savefig(f'./out_images/{title}-he_cv.png')
-    # plt.close()
-
-    # fig, axs = plt.subplots(1, 2)
-    # fig.suptitle(f'{title} CLAHE {clahe_clip_limit}, {clahe_tile_grid_size}')
-    # visualize_image_with_hist(img_clahe, axs)
-    # plt.savefig(f'./out_images/{title}-clahe.png')
-    # plt.close()
-
-    # fig, axs = plt.subplots(1, 2)
-    # fig.suptitle(f'{title} CLAHE OpenCV {clahe_clip_limit}, {clahe_tile_grid_size}')
-    # visualize_image_with_hist(img_clahe_cv, axs)
-    # plt.savefig(f'./out_images/{title}-clahe_cv.png')
-    # plt.close()
-
-    # fig, axs = plt.subplots(1, 2)
-    # fig.suptitle(f'{title} FHH {fhh_beta}')
-    # visualize_image_with_hist(img_fhh, axs)
-    # plt.savefig(f'./out_images/{title}-fhh.png')
-    # plt.close()
