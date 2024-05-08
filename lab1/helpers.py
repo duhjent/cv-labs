@@ -1,8 +1,6 @@
 import requests
 import numpy as np
 import cv2 as cv
-import matplotlib
-from typing import List
 import math
 
 def open_from_web(url):
